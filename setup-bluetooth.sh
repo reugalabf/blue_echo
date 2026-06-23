@@ -23,7 +23,10 @@ discoverable-timeout 0
 exit
 EOF
 
+sudo sdptool add SP
+
 echo "------------------------------------------------"
 echo "Bluetooth is now ON, DISCOVERABLE, and PAIRABLE."
 echo "Discoverable timeout is disabled (will stay visible)."
+echo "Serial Port is registered"
 echo "------------------------------------------------"

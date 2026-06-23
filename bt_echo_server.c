@@ -10,6 +10,7 @@ int main() {
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     socklen_t opt = sizeof(rem_addr);
     char buf[1024] = { 0 };
+    char *echo;
     int bytes_read;
 
     // 1. Allocate socket
@@ -61,10 +62,13 @@ int main() {
         printf("Received: %s", buf);
 
         // Echo back to client
-        if (write(client_sock, buf, bytes_read) != bytes_read) {
+        echo = malloc(bytes_read +1);
+        sprintf(echo,"!%s",buf);
+        if (write(client_sock, echo, bytes_read+1) != bytes_read+1) {
             perror("write");
             break;
         }
+        free(echo);
     }
 
 cleanup:
