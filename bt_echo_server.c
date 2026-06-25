@@ -5,6 +5,19 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
 
+int write_all(int fd, const uint8_t *buf, int len) {
+    int total_written = 0;
+    while (total_written < len) {
+        int written = write(fd, buf + total_written, len - total_written);
+        if (written <= 0) {
+            perror("write");
+            return -1;
+        }
+        total_written += written;
+    }
+    return 0;
+}
+
 int main() {
     int server_sock = -1, client_sock = -1;
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
@@ -58,16 +71,17 @@ int main() {
             break;
         }
 
-        buf[bytes_read] = '\0';
+        buf[sizeof(buf) - 1] = '\0';
         printf("Received: %s", buf);
 
         // Echo back to client
         echo = malloc(bytes_read +1);
+        if (!echo) { perror("malloc"); break; }
+
         sprintf(echo,"!%s",buf);
-        if (write(client_sock, echo, bytes_read+1) != bytes_read+1) {
-            perror("write");
-            break;
-        }
+        if (write_all(client_sock, (uint8_t *)echo, bytes_read + 1) < 0) {
+    break;
+}
         free(echo);
     }
 
