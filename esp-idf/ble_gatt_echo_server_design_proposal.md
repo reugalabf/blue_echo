@@ -161,37 +161,6 @@ Echo servers are frequently left "wide open" during bring-up, which is fine for 
 
 ---
 
-## 11. Implementation Stack Options
-
-| Platform | Stack | Notes |
-|---|---|---|
-| Nordic nRF52/nRF53 | Zephyr + Bluetooth subsystem, or nRF Connect SDK | Mature GATT server APIs, good for this exact pattern (see Nordic UART Service as a close reference implementation) |
-| Espressif ESP32 | ESP-IDF with NimBLE or Bluedroid | NimBLE is lighter-weight and generally preferred for GATT server work |
-| Linux (BlueZ) | BlueZ GATT server via D-Bus (`org.bluez.GattService1`) | Useful if the "peripheral" is a Linux SBC rather than an MCU |
-
-**Central-side test tooling:** nRF Connect for Mobile (iOS/Android), `bleak` (Python) for scripted testing, or a second embedded board running the complementary central role.
-
----
-
-## 12. Testing & Validation Plan
-
-1. **Basic echo correctness** — send payloads of 1, 20, 100, and 1000+ bytes; verify byte-for-byte match.
-2. **MTU boundary tests** — payload exactly at MTU limit, one byte over, one byte under.
-3. **Fragmentation reassembly** — verify sequence header (if implemented) correctly reorders/detects drops.
-4. **Reconnection** — disconnect mid-transaction, reconnect, confirm state machine resets cleanly.
-5. **Security enforcement** — attempt write before pairing, confirm rejection with correct ATT error code.
-6. **Throughput/latency benchmark** — round-trip time at various connection intervals and payload sizes, to characterize real-world performance vs. the two-characteristic design.
-7. **Multi-client stress (if extended beyond single connection)** — verify per-connection buffer isolation.
-
----
-
-## 13. Future Enhancements
-
-- Multiple simultaneous connections with per-connection RX/TX buffer isolation.
-- Switch TX to Indicate for guaranteed delivery mode (configurable via the Status/Control characteristic).
-- Add a dedicated Control characteristic to let the central select echo transforms (e.g., uppercase, reverse) for richer protocol testing beyond pure echo.
-- PHY negotiation (2M PHY) and connection interval tuning for throughput-oriented variants.
-
 ---
 
 *This proposal favors the two-characteristic (RX/Write, TX/Notify) pattern because it's the most widely recognized BLE serial-style profile shape, keeps flow control simple, and is directly extensible into a full UART-over-BLE bridge if the project grows beyond a pure echo test.*
