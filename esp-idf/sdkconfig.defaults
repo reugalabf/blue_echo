@@ -1,0 +1,22 @@
+# Bluetooth / NimBLE base config for the echo server.
+# Exact Kconfig symbol names shift a bit between ESP-IDF versions
+# (v4.4 vs v5.x) — if `idf.py build` complains about an unknown symbol,
+# open `idf.py menuconfig` -> Component config -> Bluetooth and confirm
+# the equivalent option for your installed IDF version.
+
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+
+# Single connection is enough for a bench echo server (design doc §3).
+# Raise this if you extend to multi-client (design doc §13).
+CONFIG_BT_NIMBLE_MAX_CONNECTIONS=1
+
+# We only need the peripheral/GATT-server role.
+CONFIG_BT_NIMBLE_ROLE_PERIPHERAL=y
+CONFIG_BT_NIMBLE_ROLE_CENTRAL_DISABLED=y
+CONFIG_BT_NIMBLE_ROLE_OBSERVER_DISABLED=y
+CONFIG_BT_NIMBLE_ROLE_BROADCASTER_DISABLED=y
+
+# LE Secure Connections support, in case you enable BLE_GATT_CHR_F_WRITE_ENC
+# on the RX characteristic per design doc §8.
+CONFIG_BT_NIMBLE_SM_SC=y

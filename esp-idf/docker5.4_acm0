@@ -1,0 +1,1 @@
+docker run --rm -v $PWD:/project -w /project --device /dev/ttyACM0:/dev/ttyACM0 -it espressif/idf:release-v5.4

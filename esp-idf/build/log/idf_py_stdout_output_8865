@@ -1,0 +1,20 @@
+[1/9] Performing build step for 'bootloader'
+[1/1] cd /project/build/bootloader/esp-idf/esptool_py && /opt/esp/python_env/idf5.4_py3.12_env/bin/python /opt/esp/idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /project/build/bootloader/bootloader.bin
+Bootloader binary size 0x51d0 bytes. 0x2e30 bytes (36%) free.
+[2/9] No install step for 'bootloader'
+[3/9] Completed 'bootloader'
+[4/9] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/gatt_svr.c.obj
+/project/main/gatt_svr.c:199:1: warning: 'gatt_svr_chr_access_tx' defined but not used [-Wunused-function]
+  199 | gatt_svr_chr_access_tx(uint16_t conn_handle, uint16_t attr_handle,
+      | ^~~~~~~~~~~~~~~~~~~~~~
+[5/9] Linking C static library esp-idf/main/libmain.a
+[6/9] Generating ld/sections.ld
+[7/9] Linking CXX executable ble_echo_server.elf
+[8/9] Generating binary image from built executable
+esptool.py v4.11.0
+Creating esp32c3 image...
+Merged 1 ELF section
+Successfully created esp32c3 image.
+Generated /project/build/ble_echo_server.bin
+[9/9] cd /project/build/esp-idf/esptool_py && /opt/esp/python_env/idf5.4_py3.12_env/bin/python /opt/esp/idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /project/build/partition_table/partition-table.bin /project/build/ble_echo_server.bin
+ble_echo_server.bin binary size 0x87850 bytes. Smallest app partition is 0x100000 bytes. 0x787b0 bytes (47%) free.
